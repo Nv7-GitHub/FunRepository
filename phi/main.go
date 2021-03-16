@@ -10,8 +10,9 @@ import (
 	"math/big"
 )
 
-// Calculates 14450 digits
-const digits = 240 * 60
+// Calculates 7224 digits
+const digits = 120 * 60
+const maxLoops = 100000
 
 func main() {
 	start := time.Now()
@@ -22,7 +23,9 @@ func main() {
 	fmt.Println("Initialized in", time.Since(start))
 
 	start = time.Now()
-	for {
+
+	loops := 0
+	for loops < maxLoops {
 		phi.Quo(one, phi)
 		phi.Add(phi, one)
 
@@ -30,6 +33,7 @@ func main() {
 			break
 		}
 		oldphi.Copy(phi)
+		loops++
 	}
 	fmt.Println("Calculated in", time.Since(start))
 
