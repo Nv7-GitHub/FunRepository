@@ -5,20 +5,24 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"math/big"
 )
 
-// +200 = 60 more digits
-// +10 = 3 digits
+// Calculates 14450 digits
 const digits = 240 * 60
 
 func main() {
+	start := time.Now()
 	prec := uint(digits / 3 * 10)
 	phi := new(big.Float).SetPrec(prec).SetFloat64(2)
 	one := new(big.Float).SetPrec(prec).SetFloat64(1)
 	oldphi := new(big.Float).SetPrec(prec)
-	for i := 0; i < 1000000; i++ {
+	fmt.Println("Initialized in", time.Since(start))
+
+	start = time.Now()
+	for {
 		phi.Quo(one, phi)
 		phi.Add(phi, one)
 
@@ -27,9 +31,28 @@ func main() {
 		}
 		oldphi.Copy(phi)
 	}
+	fmt.Println("Calculated in", time.Since(start))
+
+	start = time.Now()
+	corr := false
 	digis := fmt.Sprintf("%v", phi)
-	fmt.Printf("%s\nCalculated %d digits of pi!\n", digis, len(digis)-2)
-	if strings.Compare(digis[2:], correct[:len(digis)-2]) == 0 {
-		fmt.Println("Verified correct!")
+	if len(digis) > len(correct) {
+		if strings.Compare(digis[:len(correct)], correct) == 0 {
+			corr = true
+		}
+	} else {
+		if strings.Compare(digis, correct[:len(digis)]) == 0 {
+			corr = true
+		}
 	}
+	fmt.Println("Verified in", time.Since(start))
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("%s\nCalculated %d digits of pi!\n", digis, len(digis)-2)
+	if corr {
+		fmt.Println("Verified correct!")
+		return
+	}
+	fmt.Println("Incorrect :(")
 }
