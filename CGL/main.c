@@ -1,3 +1,5 @@
+// https://duriansoftware.com/joe/an-intro-to-modern-opengl.-table-of-contents
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "gl.h"
