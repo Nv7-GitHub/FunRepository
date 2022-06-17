@@ -23,7 +23,7 @@ func getSideNum(char byte) int {
 
 // isValid checks if a word can be entered into the puzzle
 func isValid(word string) bool {
-	sideNum := 0
+	sideNum := -1
 	for _, c := range []byte(word) {
 		newSideNum := getSideNum(c)
 		if newSideNum == -1 { // check that its a valid letter
