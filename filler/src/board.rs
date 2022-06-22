@@ -6,7 +6,7 @@ use rand::distributions::{Distribution, Standard};
 const WIDTH: usize = 8;
 const HEIGHT: usize = 7;
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Color {
   Red,
   Green,
@@ -15,6 +15,8 @@ pub enum Color {
   Purple,
   Black,
 }
+
+const COLORS: [Color; 6] = [Color::Red, Color::Green, Color::Yellow, Color::Blue, Color::Purple, Color::Black];
 
 impl Color {
   pub fn char(self) -> char {
@@ -47,6 +49,16 @@ pub enum Player {
   Max,
   Min,
   Neutral,
+}
+
+impl Player {
+  pub fn opposite(self) -> Player {
+    match self {
+      Player::Max => Player::Min,
+      Player::Min => Player::Max,
+      Player::Neutral => Player::Neutral,
+    }
+  }
 }
 
 #[derive(Copy, Clone)]
@@ -149,16 +161,52 @@ impl Board {
     self.eval_players();
   }
 
-  pub fn count(&self, player: Player) -> usize {
+  pub fn winner(&self) -> Player {
+    // Check if there is a winner
+    for row in 0..HEIGHT {
+      for col in 0..WIDTH {
+        if self.board[row][col].player == Player::Neutral {
+          return Player::Neutral;
+        }
+      }
+    }
+    if self.count() > 0 {
+      return Player::Max;
+    }
+    return Player::Min;
+  }
+
+  pub fn count(&self) -> i32 {
     let mut out = 0;
     for row in 0..HEIGHT {
       for col in 0..WIDTH {
-        if self.board[row][col].player == player {
-          out += 1;
+        match self.board[row][col].player {
+          Player::Max => out += 1,
+          Player::Min => out -= 1,
+          _ => {}
         }
       }
     }
     return out;
+  }
+
+  pub fn possible_moves(&self, player: Player) -> Vec<Color> {
+    let opposite = player.opposite();
+    let mut opp_color = Color::Black;
+    for row in 0..HEIGHT {
+      for col in 0..WIDTH {
+        if self.board[row][col].player == opposite {
+          opp_color = self.board[row][col].color;
+        }
+      }
+    }
+    let mut out = Vec::with_capacity(5);
+    for col in COLORS {
+      if col != opp_color {
+        out.push(col);
+      }
+    }
+    out
   }
 }
 
