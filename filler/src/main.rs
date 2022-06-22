@@ -14,7 +14,7 @@ fn clear() {
 }
  
 
-const MAX_DEPTH: usize = 5;
+const MAX_DEPTH: usize = 7;
 
 fn main() {
     let mut board = Board::new();
