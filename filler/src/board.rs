@@ -193,16 +193,20 @@ impl Board {
   pub fn possible_moves(&self, player: Player) -> Vec<Color> {
     let opposite = player.opposite();
     let mut opp_color = Color::Black;
+    let mut your_color = Color::Black;
     for row in 0..HEIGHT {
       for col in 0..WIDTH {
         if self.board[row][col].player == opposite {
           opp_color = self.board[row][col].color;
         }
+        if self.board[row][col].player == player {
+          your_color = self.board[row][col].color;
+        }
       }
     }
     let mut out = Vec::with_capacity(5);
     for col in COLORS {
-      if col != opp_color {
+      if col != opp_color && col != your_color {
         out.push(col);
       }
     }

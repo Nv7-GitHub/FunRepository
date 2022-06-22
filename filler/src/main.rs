@@ -32,7 +32,7 @@ fn main() {
             Player::Max => POSITIVE_INF,
             _ => 0,
         };
-        for m in board.possible_moves(opp) {
+        for m in board.possible_moves(player) {
             let mut new = board;
             new.turn(player, m);
             let val = minimax(new, MAX_DEPTH, NEGATIVE_INF, POSITIVE_INF, player);
