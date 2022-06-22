@@ -56,6 +56,10 @@ fn main() {
             println!("The most optimal move is {best:?}.");
         }
 
+        // Print possible
+        let possible = board.possible_moves(player);
+        println!("Possible moves: {possible:?}");
+
         // Get color
         let mut inp = String::new();
         print(format!("Enter a color ({player:?}): ").as_str());
@@ -69,8 +73,12 @@ fn main() {
             "blue" => Color::Blue,
             "yellow" => Color::Yellow,
             "purple" => Color::Purple,
-            _ => continue,
+            "a" => best_move.unwrap(),
+            _ => continue
         };
+        if !possible.contains(&color) {
+            continue
+        }
 
         // Do turn
         board.turn(player, color);
