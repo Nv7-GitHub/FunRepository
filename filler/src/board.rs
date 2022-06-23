@@ -3,8 +3,8 @@ use std::fmt::{Error, Formatter, Display};
 use rand::Rng;
 use rand::distributions::{Distribution, Standard};
 
-const WIDTH: usize = 8;
-const HEIGHT: usize = 7;
+pub const WIDTH: usize = 8;
+pub const HEIGHT: usize = 7;
 
 #[derive(Copy, Clone, PartialEq, Debug)]
 pub enum Color {

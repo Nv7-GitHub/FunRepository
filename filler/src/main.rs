@@ -56,6 +56,21 @@ fn main() {
             println!("The most optimal move is {best:?}.");
         }
 
+        // Print stats
+        let mut max = 0;
+        let mut min = 0;
+        for i in 0..HEIGHT {
+            for j in 0..WIDTH {
+                match board.board[i][j].player {
+                    Player::Min => min += 1,
+                    Player::Max => max += 1,
+                    _ => {}
+                }
+            }
+        }
+        println!("Max: {max}");
+        println!("Min: {min}");
+
         // Print possible
         let possible = board.possible_moves(player);
         println!("Possible moves: {possible:?}");
