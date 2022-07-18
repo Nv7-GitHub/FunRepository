@@ -6,7 +6,7 @@ const WIDTH: i32 = 750;
 const HEIGHT: i32 = 750;
 const ROWS: i32 = 25;
 const COLS: i32 = 25;
-const SPEED: i32 = 3;
+const SPEED: i32 = 5;
 const SNAP_RANGE: i32 = 2;
 
 #[derive(Clone, Copy, Debug)]
@@ -31,6 +31,10 @@ impl Block {
             Dir::Right => self.x += val,
         }
     }
+
+    fn colliding(&self, other: Block) -> bool {
+        other.x > self.x && other.x < (self.x + WIDTH/COLS) && other.y > self.y && other.y < (self.y + HEIGHT/ROWS)
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -39,6 +43,28 @@ enum Dir {
     Down,
     Left,
     Right
+}
+
+impl Dir {
+    fn opposite(&self) -> Dir {
+        match self {
+            Dir::Up => Dir::Down,
+            Dir::Down => Dir::Up,
+            Dir::Left => Dir::Right,
+            Dir::Right => Dir::Left,
+        }
+    }
+}
+
+fn push_dir(dir: Dir, blocks: &Vec<Block>, q: &mut Vec<Dir>) {
+    if q.len() > 0 {
+        if (*q.last().unwrap()).opposite() == dir {
+            return;
+        }
+    } else if blocks[0].dir.opposite() == dir {
+        return;
+    }
+    q.push(dir);
 }
 
 fn main() {
@@ -57,8 +83,16 @@ fn main() {
     let mut apple_y = rng.gen_range(0..ROWS) * WIDTH/ROWS;
     let mut append = false;
 
+    let mut gameover: bool = false;
+
     while !rl.window_should_close() {
-        // Apply movement
+        if gameover {
+            let mut d = rl.begin_drawing(&thread);
+            d.clear_background(Color::WHITE);
+            continue;
+        }
+
+        // Add to end if needed
         if append {
             let last = blocks[blocks.len()-1];
             match last.dir {
@@ -70,7 +104,8 @@ fn main() {
             
             append = false;
         }
-
+        
+        // Apply movement
         for block in blocks.iter_mut() {
             block.apply_movement(block.dir, SPEED);
         }
@@ -84,24 +119,36 @@ fn main() {
             i -= 1;
         }
 
+        // Collision checks
+        if blocks.len() > 1 {
+            for i in 1..blocks.len() {
+                if blocks[i].dir == blocks[i-1].dir && blocks[i].colliding(blocks[0]) {
+                    gameover = true;
+                }
+            }
+        }   
+
         // Get input
         if rl.is_key_pressed(KeyboardKey::KEY_DOWN) {
-            queue.push(Dir::Down);
+            push_dir(Dir::Down, &blocks, &mut queue);
         }
         if rl.is_key_pressed(KeyboardKey::KEY_UP) {
-            queue.push(Dir::Up);
+            push_dir(Dir::Up, &blocks, &mut queue);
         }
         if rl.is_key_released(KeyboardKey::KEY_LEFT) {
-            queue.push(Dir::Left);
+            push_dir(Dir::Left, &blocks, &mut queue);
         }
         if rl.is_key_pressed(KeyboardKey::KEY_RIGHT) {
-            queue.push(Dir::Right);
+            push_dir(Dir::Right, &blocks, &mut queue);
         }
 
         // Check if ready for input
-        if blocks[0].x % (WIDTH/COLS) < SNAP_RANGE && blocks[0].y % (HEIGHT/ROWS) < SNAP_RANGE && queue.len() > 0  {
-            blocks[0].x -= blocks[0].x % (WIDTH/COLS);
-            blocks[0].y -= blocks[0].y % (HEIGHT/ROWS);
+        if blocks[0].x % (WIDTH/COLS) < SNAP_RANGE && blocks[0].y % (HEIGHT/ROWS) < SNAP_RANGE && queue.len() > 0 && (blocks.len() == 1 || blocks[0].dir == blocks[1].dir)  {
+            let first = blocks[0];
+            for block in blocks.iter_mut() {
+                block.x -= first.x % (WIDTH/COLS);
+                block.y -= first.y % (HEIGHT/ROWS);
+            }
             blocks[0].dir = queue.remove(0);
             blocks[0].dirchangex = blocks[0].x;
             blocks[0].dirchangey = blocks[0].y;
