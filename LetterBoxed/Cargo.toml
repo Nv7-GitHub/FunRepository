@@ -1,7 +1,11 @@
 [package]
 name = "letterboxed"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+description = "A solver for the New York Times Letter Boxed puzzle - https://www.nytimes.com/puzzles/letter-boxed"
+homepage = "https://nv7haven.com/letterboxed"
+keywords = ["puzzles", "nytimes", "solver"]
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
