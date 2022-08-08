@@ -6,6 +6,7 @@ description = "A solver for the New York Times Letter Boxed puzzle - https://www
 homepage = "https://nv7haven.com/letterboxed"
 keywords = ["puzzles", "nytimes", "solver"]
 license = "MIT"
+include = ["/src", "Cargo.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
