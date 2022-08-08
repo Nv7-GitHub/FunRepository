@@ -1,4 +1,4 @@
-fn is_valid(word: &&str, allowed: &[[u8; 3]; 4]) -> bool {
+fn is_valid(word: &String, allowed: &[[u8; 3]; 4]) -> bool {
     let mut side_num = -1;
     for c in word.bytes() {
         // Get side num
@@ -72,7 +72,7 @@ fn iddfs(v: &mut Vec<usize>, max_len: usize, allowed: &[[u8; 3]; 4], words: &Vec
     None
 }
 
-pub fn solve(allowed: [[u8; 3]; 4], wordlist: &Vec<&str>) -> Vec<String> {
+pub fn solve(allowed: [[u8; 3]; 4], wordlist: &Vec<String>) -> Vec<String> {
     // Filter words
     let mut words = Vec::new();
     for word in wordlist.iter() {
@@ -115,7 +115,9 @@ mod tests {
     #[test]
     fn test() {
         let allowed: [[u8; 3]; 4] = [[b'x', b'i', b'e'], [b'm', b'c', b'n'], [b'o', b'u', b'y'], [b'l', b'q', b'r']];
-        let res = solve(allowed, &test_words());
+        let data = test_data();
+        let words: Vec<String> = data.split(",").map(|v| {v.to_string()}).collect();
+        let res = solve(allowed, &words);
         assert_eq!(res, vec!["oxymoronic".to_string(), "clinique".to_string()])
     }
 }
