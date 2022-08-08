@@ -1,7 +1,3 @@
-mod words;
-
-use words::*;
-
 fn is_valid(word: &&str, allowed: &[[u8; 3]; 4]) -> bool {
     let mut side_num = -1;
     for c in word.bytes() {
@@ -76,10 +72,10 @@ fn iddfs(v: &mut Vec<usize>, max_len: usize, allowed: &[[u8; 3]; 4], words: &Vec
     None
 }
 
-pub fn solve(allowed: [[u8; 3]; 4]) -> Vec<String> {
+pub fn solve(allowed: [[u8; 3]; 4], wordlist: &Vec<&str>) -> Vec<String> {
     // Filter words
     let mut words = Vec::new();
-    for word in WORDS {
+    for word in wordlist.iter() {
         if is_valid(word, &allowed) {
             words.push(word.to_string());
         }
@@ -109,9 +105,17 @@ pub fn solve(allowed: [[u8; 3]; 4]) -> Vec<String> {
     }
 }
 
-#[test]
-fn test() {
-    let allowed: [[u8; 3]; 4] = [[b'x', b'i', b'e'], [b'm', b'c', b'n'], [b'o', b'u', b'y'], [b'l', b'q', b'r']];
-    let res = solve(allowed);
-    assert_eq!(res, vec!["oxymoronic".to_string(), "clinique".to_string()])
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    mod words;
+    use words::*;
+
+    #[test]
+    fn test() {
+        let allowed: [[u8; 3]; 4] = [[b'x', b'i', b'e'], [b'm', b'c', b'n'], [b'o', b'u', b'y'], [b'l', b'q', b'r']];
+        let res = solve(allowed, &test_words());
+        assert_eq!(res, vec!["oxymoronic".to_string(), "clinique".to_string()])
+    }
 }
