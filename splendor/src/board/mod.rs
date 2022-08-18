@@ -1,6 +1,6 @@
 use enum_map::Enum;
 
-#[derive(Enum, Clone, Copy)]
+#[derive(Enum, Clone, Copy, Debug)]
 pub enum Gem {
   Ruby ,
   Emerald,
@@ -13,19 +13,21 @@ pub enum Gem {
 pub const COLS: usize = 4;
 pub const ROWS: usize = 3;
 
+#[derive(Clone, Debug)]
 pub struct Card {
   pub points: usize,
   pub gem: Gem,
   pub requirements: Vec<Requirement>,
 }
 
+#[derive(Clone, Debug)]
 pub struct Requirement {
   pub gem: Gem,
   pub count: usize,
 }
 
 pub struct Board {
-  pub cards: [[Card; COLS]; ROWS],
+  pub cards: Vec<Vec<Option<Card>>>,
 }
 
 mod solve;
