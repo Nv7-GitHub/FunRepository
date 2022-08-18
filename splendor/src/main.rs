@@ -26,5 +26,5 @@ fn main() {
     };
     
     let res = b.solve(&mut Vec::new());
-    println!("{res:?}");
+    println!("{res:#?}");
 }
