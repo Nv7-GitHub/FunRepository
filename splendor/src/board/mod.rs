@@ -1,5 +1,8 @@
+use enum_map::Enum;
+
+#[derive(Enum, Clone, Copy)]
 pub enum Gem {
-  Ruby,
+  Ruby ,
   Emerald,
   Onyx,
   Sapphire,
@@ -25,3 +28,4 @@ pub struct Board {
   pub cards: [[Card; COLS]; ROWS],
 }
 
+mod solve;

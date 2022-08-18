@@ -2,7 +2,7 @@ mod board;
 use board::*;
 
 fn main() {
-    let mut board = Board{
+    let mut b = Board{
         cards: [
             [
                 Card{gem: Gem::Ruby, requirements: vec![Requirement{gem: Gem::Sapphire, count: 3}, Requirement{gem: Gem::Emerald, count: 6}, Requirement{gem: Gem::Ruby, count: 3}], points: 4},
@@ -24,4 +24,6 @@ fn main() {
             ],
         ],
     };
+    
+    
 }
