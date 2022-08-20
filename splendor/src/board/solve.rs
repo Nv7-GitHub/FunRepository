@@ -2,8 +2,6 @@ use enum_map::EnumMap;
 
 use super::*;
 
-const TARGET_SCORE: usize = 15;
-
 impl Board {
   fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize{
     // Check how much left
@@ -65,13 +63,15 @@ impl Board {
 
       // Calculate
       let res = self.iddfs(cards, depth - 1);
-      if let Some(out) = res {
-        return Some(out); // If it works return
-      }
-      
+
       // Return to original state
       self.cards[r][c] = card;
       cards.pop().unwrap();
+
+      // Check
+      if let Some(out) = res {
+        return Some(out); // If it works return
+      }
     }
 
     None
