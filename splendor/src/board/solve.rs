@@ -1,25 +1,19 @@
-use enum_map::EnumMap;
-
 use super::*;
 
 impl Board {
   pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize{
-    // Check how much left
-    let mut reqs: EnumMap<Gem, usize> = EnumMap::default();
+    // Calculate count
+    let mut count = 0;
     for req in card.requirements.iter() {
-      reqs[req.gem] = req.count;
+      count += req.count;
     }
-    for card in cards.iter() {
-      if reqs[card.gem] > 0 {
-        reqs[card.gem] = reqs[card.gem] - 1;
+    for crd in cards.iter() {
+      if card.requirements.iter().any(|req| req.gem == crd.gem) {
+        count -= 1;
       }
     }
 
     // Calculate turns
-    let mut count = 0;
-    for (_, cnt) in reqs {
-      count += cnt;
-    }
     let mut turns = count / 3; // Can get 3 at a time in the start
     count %= 3;
     turns += (count + 1) / 2; // Have to get 2 at a time since then
@@ -54,8 +48,7 @@ impl Board {
           }
 
           // Buy card
-          let card = self.cards[r].remove(c);
-          self.cards[r].insert(c, None);
+          let card = self.cards[r][c].take();
           cards.push(card.as_ref().unwrap().clone());
 
           // Calculate
@@ -68,7 +61,7 @@ impl Board {
           if let Some(out) = res {
             return Some(out); // If it works return
           } else {
-            cards.pop().unwrap(); // Incorrect, remove from strategy
+            cards.pop(); // Incorrect, remove from strategy
           }
         }
       }

@@ -1,10 +1,8 @@
-use enum_map::Enum;
-
 pub const TARGET_SCORE: usize = 15;
 pub const COLS: usize = 4;
 pub const ROWS: usize = 3;
 
-#[derive(Enum, Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Gem {
   Ruby,
   Emerald,

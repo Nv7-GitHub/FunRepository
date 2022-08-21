@@ -21,7 +21,7 @@ impl Display for Card {
 }
 
 impl Board {
-  pub fn loadfile(&mut self, file: &str) -> Vec<Card>{
+  pub fn loadfile(&mut self, file: &str) -> Vec<Card> {
     let mut inv = Vec::new();
     let res = std::fs::read_to_string(file).unwrap();
     let mut row = 0;
