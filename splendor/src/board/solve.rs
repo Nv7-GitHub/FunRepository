@@ -44,40 +44,36 @@ impl Board {
     }
 
     // Go through possible cards
-    let mut vals: Vec<(usize, usize, usize)> = Vec::with_capacity(ROWS * COLS);
     for r in 0..ROWS {
       for c in 0..COLS {
         // Add card to inv and remove from table
         if let Some(card) = &self.cards[r][c] {
           let dist = self.distance(card, cards);
-          if dist + cardturns <= depth {
-            vals.push((r, c, dist));
+          if dist + cardturns > depth { // Incorrect depth
+            continue;
+          }
+
+          // Buy card
+          let card = self.cards[r].remove(c);
+          self.cards[r].insert(c, None);
+          cards.push(card.as_ref().unwrap().clone());
+
+          // Calculate
+          let res = self.iddfs(cards, cardturns + dist, depth - 1);
+
+          // Return to original state
+          self.cards[r][c] = card;
+
+          // Check
+          if let Some(out) = res {
+            return Some(out); // If it works return
+          } else {
+            cards.pop().unwrap(); // Incorrect, remove from strategy
           }
         }
       }
     }
-
-    //vals.sort_by(|a, b| b.2.cmp(&a.2)); // Slows it down without change in output
-
-    for (r, c, dist) in vals {
-      // Buy card
-      let card = self.cards[r].remove(c);
-      self.cards[r].insert(c, None);
-      cards.push(card.as_ref().unwrap().clone());
-
-      // Calculate
-      let res = self.iddfs(cards, cardturns + dist, depth - 1);
-
-      // Return to original state
-      self.cards[r][c] = card;
-      cards.pop().unwrap();
-
-      // Check
-      if let Some(out) = res {
-        return Some(out); // If it works return
-      }
-    }
-
+    
     None
   }
 

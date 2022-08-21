@@ -16,7 +16,7 @@ impl Display for Gem {
 
 impl Display for Card {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-    write!(f, "({}, {}) - {}{}", self.pos.1 + 1, self.pos.0 + 1, self.points, self.gem) // (x, y) - countgem
+    write!(f, "({}, {}) - {}{}", self.pos.0 + 1, self.pos.1 + 1, self.points, self.gem) // (row, col) - <points><gem>
   }
 }
 
