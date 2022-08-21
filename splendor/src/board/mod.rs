@@ -13,7 +13,13 @@ pub enum Gem {
   Diamond,
 } // Cards can't be gold so ignoring that
 
-#[derive(Clone, Debug)]
+impl Default for Gem {
+  fn default() -> Self {
+    Self::Ruby
+  }
+}
+
+#[derive(Clone, Debug, Default)]
 pub struct Card {
   pub points: usize,
   pub gem: Gem,
@@ -29,22 +35,13 @@ pub struct Requirement {
 
 pub struct Board {
   pub cards: Vec<Vec<Option<Card>>>,
-
-  // For editing
-  highlight: Vec<Vec<bool>>,
 }
 
 impl Default for Board {
   fn default() -> Self {
-    Self { cards: vec![vec![None; COLS]; ROWS], highlight: vec![vec![false; COLS]; ROWS] }
-  }
-}
-
-impl Board {
-  fn reset_highlight(&mut self) {
-    self.highlight = vec![vec![false; COLS]; ROWS];
+    Self { cards: vec![vec![None; COLS]; ROWS] }
   }
 }
 
 mod solve;
-mod edit;
+mod display;

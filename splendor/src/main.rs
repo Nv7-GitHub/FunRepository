@@ -3,5 +3,9 @@ use board::*;
 
 fn main() {
     let mut b = Board::default();
-    b.edit();
+    let mut inv = b.loadfile("board.txt");
+    let res = b.solve(&mut inv);
+    for card in res {
+        println!("{}", card);
+    }
 }
