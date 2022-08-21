@@ -20,9 +20,9 @@ impl Board {
     for (_, cnt) in reqs {
       count += cnt;
     }
-    let mut turns = count / 3; // Can get 3 at a time in the strt
+    let mut turns = count / 3; // Can get 3 at a time in the start
     count %= 3;
-    turns += count/2; // Have to get 2 at a time since then
+    turns += (count + 1) / 2; // Have to get 2 at a time since then
 
     // Return
     turns
@@ -56,7 +56,8 @@ impl Board {
         }
       }
     }
-    vals.sort_by(|a, b| b.2.cmp(&a.2));
+
+    //vals.sort_by(|a, b| b.2.cmp(&a.2)); // Slows it down without change in output
 
     for (r, c, dist) in vals {
       // Buy card

@@ -50,6 +50,7 @@ impl Board {
 
       // Save
       if row <= ROWS {
+        card.pos = (row, col);
         self.cards[row][col] = Some(card);
   
         col += 1;
@@ -58,6 +59,7 @@ impl Board {
           col = 0;
         }
       } else {
+        card.pos = (ROWS, COLS); // Out of bounds
         inv.push(card);
       }
     }
