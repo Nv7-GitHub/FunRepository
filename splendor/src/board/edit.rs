@@ -10,11 +10,11 @@ fn clear() {
 impl Display for Gem {
   fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
     match self {
-      Self::Onyx => write!(f, "\x1b[30;1mR\x1b[0m"),
+      Self::Onyx => write!(f, "\x1b[30;1mO\x1b[0m"),
       Self::Ruby => write!(f, "\x1b[31;1mR\x1b[0m"),
       Self::Emerald => write!(f, "\x1b[32;1mE\x1b[0m"),
-      Self::Sapphire => write!(f, "\x1b[34;1mR\x1b[0m"),
-      Self::Diamond => write!(f, "\x1b[37;1mR\x1b[0m"),
+      Self::Sapphire => write!(f, "\x1b[34;1mS\x1b[0m"),
+      Self::Diamond => write!(f, "\x1b[37;1mD\x1b[0m"),
     }
   }
 }
