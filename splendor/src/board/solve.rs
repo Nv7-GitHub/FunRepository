@@ -3,7 +3,7 @@ use enum_map::EnumMap;
 use super::*;
 
 impl Board {
-  fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize{
+  pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize{
     // Check how much left
     let mut reqs: EnumMap<Gem, usize> = EnumMap::default();
     for req in card.requirements.iter() {
@@ -28,7 +28,7 @@ impl Board {
     turns
   }
 
-  fn iddfs(&mut self, cards: &mut Vec<Card>, depth: usize) -> Option<Vec<Card>> {
+  fn iddfs(&mut self, cards: &mut Vec<Card>, cardturns: usize, depth: usize) -> Option<Vec<Card>> {
     // Check if done
     let mut score = 0;
     for card in cards.iter() {
@@ -49,20 +49,23 @@ impl Board {
       for c in 0..COLS {
         // Add card to inv and remove from table
         if let Some(card) = &self.cards[r][c] {
-          vals.push((r, c, self.distance(card, cards)));
+          let dist = self.distance(card, cards);
+          if dist + cardturns <= depth {
+            vals.push((r, c, dist));
+          }
         }
       }
     }
     vals.sort_by(|a, b| b.2.cmp(&a.2));
 
-    for (r, c, _) in vals {
+    for (r, c, dist) in vals {
       // Buy card
       let card = self.cards[r].remove(c);
       self.cards[r].insert(c, None);
       cards.push(card.as_ref().unwrap().clone());
 
       // Calculate
-      let res = self.iddfs(cards, depth - 1);
+      let res = self.iddfs(cards, cardturns + dist, depth - 1);
 
       // Return to original state
       self.cards[r][c] = card;
@@ -80,7 +83,7 @@ impl Board {
   pub fn solve(&mut self, cards: &mut Vec<Card>) -> Vec<Card> {
     let mut depth = 1;
     loop {
-      let res = self.iddfs(cards, depth);
+      let res = self.iddfs(cards, 0, depth);
       if let Some(val) = res {
         return val;
       }

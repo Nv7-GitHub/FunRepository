@@ -79,11 +79,11 @@ impl Board {
     out
   }
 
-  fn edit_iter(&mut self) {
+  fn edit_iter(&mut self, inv: &mut Vec<Card>) {
     loop {
       self.reset_highlight();
       
-      let op = self.inp("Operation (edit, remove, done): ");
+      let op = self.inp("Operation (edit, remove, addinv, done): ");
       match op.as_str() {
         "remove" => {
           let row: usize = self.inp("Row: ").parse().unwrap();
@@ -123,19 +123,27 @@ impl Board {
           self.reset_highlight();
         }
         "done" => break,
+        "addinv" => {
+          let row: usize = self.inp("Row: ").parse().unwrap();
+          let col: usize = self.inp("Column: ").parse().unwrap();
+          let card = self.cards[row].remove(col).unwrap();
+          self.cards[row].insert(col, None);
+          inv.push(card);
+        }
         _ => panic!("invalid input"),
       }
     }
   }
 
   pub fn edit(&mut self) {
+    let mut inv = Vec::new();
     loop {
       // Let editing happen
-      self.edit_iter();
+      self.edit_iter(&mut inv);
 
       // Solve
       clear();
-      let res = self.solve(&mut Vec::new());
+      let res = self.solve(&mut inv);
 
       // Display
       self.reset_highlight();
