@@ -2,7 +2,7 @@
 A solver for the board game [Splendor](https://www.spacecowboys.fr/splendor)!
 
 ## How I play
-This solver is meant for how I play, in which players try to reach 15 points. The city official cards are ignored when I play, so they are not included in this.
+This solver is meant for how I play, in which players try to reach 15 points. The nobles are ignored when I play, so they are not included in this (however they might be added in the future).
 
 ## Usage
 Make a file called `board.txt` (in the working directory of the command). This will contain the board state. Every time the board changes in one of the following events, re-run this program:
