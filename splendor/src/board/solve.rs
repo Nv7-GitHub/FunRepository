@@ -67,6 +67,7 @@ impl Board {
       }
     }
     
+    // None of the cards work, return
     None
   }
 

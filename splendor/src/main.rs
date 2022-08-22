@@ -6,6 +6,8 @@ fn main() {
     let mut inv = b.loadfile("board.txt");
     let res = b.solve(&mut inv);
     for card in res {
-        println!("{}", card);
+        if card.pos.0 < ROWS && card.pos.1 < COLS {
+            println!("{}", card);
+        }
     }
 }
