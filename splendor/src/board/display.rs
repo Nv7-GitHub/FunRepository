@@ -49,7 +49,7 @@ impl Board {
       }
 
       // Save
-      if row <= ROWS {
+      if row < ROWS {
         card.pos = (row, col);
         self.cards[row][col] = Some(card);
   
