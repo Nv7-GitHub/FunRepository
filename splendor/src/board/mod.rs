@@ -1,4 +1,5 @@
 pub const TARGET_SCORE: usize = 15;
+const MAX_GEMS: usize = 10;
 pub const COLS: usize = 4;
 pub const ROWS: usize = 3;
 

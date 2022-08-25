@@ -1,7 +1,7 @@
 use super::*;
 
 impl Board {
-  pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize{
+  pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> usize {
     // Calculate count
     let mut count = 0;
     for req in card.requirements.iter() {
@@ -13,6 +13,9 @@ impl Board {
           count -= 1;
         }
       }
+    }
+    if count >= MAX_GEMS {
+      return usize::MAX;
     }
 
     // Calculate turns
