@@ -15,7 +15,7 @@ impl Board {
       }
     }
     if count >= MAX_GEMS {
-      return usize::MAX;
+      return MAX_GEMS; // Not really accurate
     }
 
     // Calculate turns
