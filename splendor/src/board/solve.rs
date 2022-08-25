@@ -9,7 +9,9 @@ impl Board {
     }
     for crd in cards.iter() {
       if card.requirements.iter().any(|req| req.gem == crd.gem) {
-        count -= 1;
+        if count > 0 {
+          count -= 1;
+        }
       }
     }
 
