@@ -44,3 +44,4 @@ impl Default for Board {
 
 mod solve;
 mod display;
+mod dist;
