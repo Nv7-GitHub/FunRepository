@@ -10,11 +10,4 @@ fn main() {
             println!("{}", card);
         }
     }
-    /*for row in b.cards.iter() {
-        for card in row {
-            if let Some(c) = card {
-                println!("{:?} {:?}", c, b.distance(c, &inv));
-            }
-        }
-    }*/
 }
