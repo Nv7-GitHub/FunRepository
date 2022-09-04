@@ -19,9 +19,11 @@ fn recalc_reqs(reqs: &mut Vec<Requirement>) {
 impl Board {
   pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> Option<usize> {
     let mut reqs = card.requirements.clone();
-    for req in reqs.iter_mut() {
-      if let Some(_) = cards.iter().find(|c| c.gem == req.gem) {
-        req.count -= 1;
+    for c in cards.iter() {
+      if let Some(r) = reqs.iter_mut().find(|r| r.gem == c.gem) {
+        if r.count > 0 {
+          r.count -= 1;
+        }
       }
     }
     recalc_reqs(&mut reqs);
