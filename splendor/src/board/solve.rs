@@ -1,32 +1,6 @@
 use super::*;
 
 impl Board {
-  pub fn distance(&self, card: &Card, cards: &Vec<Card>) -> Option<usize> {
-    // Calculate count
-    let mut count = 0;
-    for req in card.requirements.iter() {
-      count += req.count;
-    }
-    for crd in cards.iter() {
-      if card.requirements.iter().any(|req| req.gem == crd.gem) {
-        if count > 0 {
-          count -= 1;
-        }
-      }
-    }
-    if count >= MAX_GEMS {
-      return None; // Impossible to get
-    }
-
-    // Calculate turns
-    let mut turns = count / 3; // Can get 3 at a time in the start
-    count %= 3;
-    turns += (count + 1) / 2; // Have to get 2 at a time since then
-
-    // Return
-    Some(turns)
-  }
-
   fn iddfs(&mut self, cards: &mut Vec<Card>, cardturns: usize, depth: usize) -> Option<Vec<Card>> {
     // Check if done
     let mut score = 0;
