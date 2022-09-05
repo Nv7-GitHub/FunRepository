@@ -48,7 +48,7 @@ impl Board {
         }
       } else {
         // Remove 2 at a time
-        if reqs[0].count < 2 {
+        if reqs[0].count < 4 {
           reqs[0].count = 0; // Below 2, just set it to 0
         } else {
           reqs[0].count -= 2;
